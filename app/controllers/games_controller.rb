@@ -1,7 +1,6 @@
-require_relative '../../lib/config'
+require 'mastermind_game_cli'
 
 class GamesController < ApplicationController
-  before_action :set_game, only: [:show, :update, :destroy]
   before_filter :restrict_access, only: [:index]
 
   # GET /games
@@ -11,45 +10,38 @@ class GamesController < ApplicationController
     render json: @games
   end
 
-  # GET /games/1
-  def show
-    render json: @game
-  end
-
   # POST /games
   def create
-    @game = Game.new(game_params)
+    num_pos = params[:num_pos].nil? ? 5 : params[:num_pos].to_i
+    num_pos = 9 if num_pos > 9
+    num_pos = 4 if num_pos < 4
+    sequence = MastermindGameCli::Sequence.new(num_pos)
+    @game = Game.new({
+        :token => Game.generate_unique_secure_token,
+        :ip => request.remote_ip,
+        :num_pos => num_pos,
+        :sequence => sequence.value,
+        :repeated => false #params[:repeated].nil? ? false : params[:repeated]
+    })
 
     if @game.save
-      render json: @game, status: :created, location: @game
+      result = {
+          :token => @game.token,
+          :num_pos => @game.num_pos,
+          :repeated => @game.repeated?,
+          :created => @game.created_at,
+          :sequence => @game.sequence
+      }
+      render json: result, status: :created, location: @game
     else
       render json: @game.errors, status: :unprocessable_entity
     end
-  end
-
-  # PATCH/PUT /games/1
-  def update
-    if @game.update(game_params)
-      render json: @game
-    else
-      render json: @game.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /games/1
-  def destroy
-    @game.destroy
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game
-      @game = Game.find(params[:id])
-    end
-
     # Only allow a trusted parameter "white list" through.
     def game_params
-      params.require(:game).permit(:token, :ip, :sequence, :num_pos, :repeated)
+      params.require(:game).permit(:ip, :num_pos, :repeated)
     end
 
     def restrict_access
