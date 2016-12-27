@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: MyString
+  tries: 1
+  seconds: 1
+  num_pos: 1
+  repeated: false
+
+two:
+  user: MyString
+  tries: 1
+  seconds: 1
+  num_pos: 1
+  repeated: false

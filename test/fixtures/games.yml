@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  token: MyString
+  ip: MyString
+  sequence: MyString
+  num_pos: 1
+  repeated: false
+
+two:
+  token: MyString
+  ip: MyString
+  sequence: MyString
+  num_pos: 1
+  repeated: false
