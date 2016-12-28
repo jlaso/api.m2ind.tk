@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_token: MyString
+  try: MyString
+  result: MyString
+  seconds: 1
+  accepted: false
+
+two:
+  game_token: MyString
+  try: MyString
+  result: MyString
+  seconds: 1
+  accepted: false

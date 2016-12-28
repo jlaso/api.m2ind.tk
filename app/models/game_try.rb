@@ -1,0 +1,2 @@
+class GameTry < ApplicationRecord
+end

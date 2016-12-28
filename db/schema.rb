@@ -10,12 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227154812) do
+ActiveRecord::Schema.define(version: 20161228093113) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "access_token"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+  end
+
+  create_table "game_tries", force: :cascade do |t|
+    t.string   "game_token"
+    t.string   "try"
+    t.string   "result"
+    t.integer  "seconds"
+    t.boolean  "accepted"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "games", force: :cascade do |t|
