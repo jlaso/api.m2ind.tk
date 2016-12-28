@@ -29,9 +29,9 @@ class GamesController < ApplicationController
           :token => @game.token,
           :num_pos => @game.num_pos,
           :repeated => @game.repeated?,
-          :created => @game.created_at,
-        # for the moment don't tell the sequence to guess into the response
-        #  :sequence => @game.sequence
+        # for the moment don't include the sequence to guess into the response
+        #  :sequence => @game.sequence,
+          :created => @game.created_at
       }
       render json: result, status: :created, location: @game
     else
