@@ -52,7 +52,7 @@ class GameTriesController < ApplicationController
             :you_win => finished,
             :score => score_id,
             :hint => finished ? nil : get_hint(game.sequence, guess, tries),
-            :try_num => tries.length + 1
+            :try_num => tries.length # because the new one is already included in the where (live ?)
         }, status: :ok
         #render json: @game_try, status: :created, location: @game_try
       else
