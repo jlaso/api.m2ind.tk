@@ -40,6 +40,11 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # ApiKey generation
   gem 'expirable-token'
+  # deployment
+  gem 'capistrano'
+  gem 'capistrano-rvm'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
