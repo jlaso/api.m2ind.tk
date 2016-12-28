@@ -30,7 +30,8 @@ class GamesController < ApplicationController
           :num_pos => @game.num_pos,
           :repeated => @game.repeated?,
           :created => @game.created_at,
-          :sequence => @game.sequence
+        # for the moment don't tell the sequence to guess into the response
+        #  :sequence => @game.sequence
       }
       render json: result, status: :created, location: @game
     else
