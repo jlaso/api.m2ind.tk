@@ -40,11 +40,6 @@ class GamesController < ApplicationController
   end
 
   private
-    # Only allow a trusted parameter "white list" through.
-    def game_params
-      params.require(:game).permit(:ip, :num_pos, :repeated)
-    end
-
     def restrict_access
       api_key = ApiKey.find_by_access_token(params[:access_token])
       head :unauthorized unless api_key

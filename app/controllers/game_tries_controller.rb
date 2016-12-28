@@ -1,7 +1,6 @@
 require 'mastermind_game_cli'
 
 class GameTriesController < ApplicationController
-  before_action :set_game_try, only: [:show, :update, :destroy]
   before_filter :restrict_access, only: [:index]
 
   # GET /game_tries
@@ -34,7 +33,8 @@ class GameTriesController < ApplicationController
       result = MastermindGameCli::Checker.check(game.sequence, guess)
       finished = (result == '1' * game.num_pos)
       seconds = Time.now.to_i - game.created_at.to_i
-      score_id = finished ? save_score(game, seconds, tries) : nil
+      num_tries_used_so_far = tries.length + 1  # counting the current one
+      score_id = finished ? save_score(game, seconds, num_tries_used_so_far) : nil
 
       @game_try = GameTry.new({
                                   :game_token => game_token,
@@ -52,7 +52,7 @@ class GameTriesController < ApplicationController
             :you_win => finished,
             :score => score_id,
             :hint => finished ? nil : get_hint(game.sequence, guess, tries),
-            :try_num => tries.length # because the new one is already included in the where (live ?)
+            :try_num => num_tries_used_so_far
         }, status: :ok
         #render json: @game_try, status: :created, location: @game_try
       else
@@ -67,16 +67,6 @@ class GameTriesController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_game_try
-    @game_try = GameTry.find(params[:id])
-  end
-
-  # Only allow a trusted parameter "white list" through.
-  def game_try_params
-    params.require(:game_try).permit(:game_token, :try, :result, :seconds, :accepted)
-  end
-
   def restrict_access
     api_key = ApiKey.find_by_access_token(params[:access_token])
     head :unauthorized unless api_key
@@ -101,7 +91,7 @@ class GameTriesController < ApplicationController
     score = Score.new({
                           :game_token => game.token,
                           :user => 'unknown',
-                          :tries => 1 + tries.length,
+                          :tries => tries,
                           :seconds => seconds,
                           :num_pos => game.num_pos,
                           :repeated => game.repeated?
