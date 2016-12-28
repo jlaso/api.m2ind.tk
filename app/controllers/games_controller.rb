@@ -1,4 +1,5 @@
 require 'mastermind_game_cli'
+require_relative '../../lib/version'
 
 class GamesController < ApplicationController
   before_filter :restrict_access, only: [:index]
@@ -31,7 +32,8 @@ class GamesController < ApplicationController
           :repeated => @game.repeated?,
         # for the moment don't include the sequence to guess into the response
         #  :sequence => @game.sequence,
-          :created => @game.created_at
+          :created => @game.created_at,
+          :version => VERSION
       }
       render json: result, status: :created, location: @game
     else
