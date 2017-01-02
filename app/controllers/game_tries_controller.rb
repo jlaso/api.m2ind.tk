@@ -1,7 +1,6 @@
 require 'mastermind_game_cli'
 
 class GameTriesController < ApplicationController
-  #before_filter :restrict_access, only: [:index]
 
   # GET /game_tries
   def index
@@ -92,10 +91,6 @@ class GameTriesController < ApplicationController
   end
 
   private
-  def restrict_access
-    api_key = ApiKey.find_by_access_token(params[:access_token])
-    head :unauthorized unless api_key
-  end
 
   def get_hint(sequence, guess, tries)
     candidates = []

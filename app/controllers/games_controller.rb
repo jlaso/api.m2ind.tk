@@ -33,7 +33,7 @@ class GamesController < ApplicationController
         # for the moment don't include the sequence to guess into the response
         #  :sequence => @game.sequence,
           :created => @game.created_at,
-          :version => VERSION
+          :version => APP_VERSION
       }
       render json: result, status: :created, location: @game
     else

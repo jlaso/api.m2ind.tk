@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  game_id: 1
+  game_token: MyString
+  hint: 1
+
+two:
+  game_id: 1
+  game_token: MyString
+  hint: 1

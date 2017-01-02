@@ -6,16 +6,11 @@ class ScoresController < ApplicationController
     if params[:fix_points]
       for score in Score.all do
         score.points = 0
-        score.save
+        score.save  # save forces the calculation of points again
       end
     end
 
     @scores = Score.order(points: :desc).first(10)
-
-    # @TODO: order by the right rate formula (tries, num_pos, repeated, seconds)
-
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Credentials'] = true
     render json: @scores
   end
 
