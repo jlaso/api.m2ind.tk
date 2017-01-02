@@ -2,13 +2,39 @@ class ScoresController < ApplicationController
 
   # GET /scores
   def index
-    @scores = Score.order(:tries).first(10)
+
+    if params[:fix_points]
+      for score in Score.all do
+        score.points = 0
+        score.save
+      end
+    end
+
+    @scores = Score.order(points: :desc).first(10)
 
     # @TODO: order by the right rate formula (tries, num_pos, repeated, seconds)
 
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Credentials'] = true
     render json: @scores
   end
 
+  # GET /scores/{game_token}
+  def show
+    @score = Score.find_by_game_token(params[:id])
+    if @score
+      render json: {
+          :user => @score.user,
+          :tries => @score.tries,
+          :point => @score.points,
+          :seconds => @score.seconds,
+          :num_pos => @score.num_pos,
+          :repeated => @score.repeated
+      }
+    else
+      render json: nil
+    end
+  end
 
   # PATCH/PUT /scores/1
   def update
@@ -22,6 +48,7 @@ class ScoresController < ApplicationController
       @score = Score.find(score_id)
       raise 'score game not found' unless @score
       raise 'data mismatch' if @score.game_token != game_token
+      raise 'user already set' if @score.user != 'unknown'
 
       if @score.update({:user => user})
         render json: {

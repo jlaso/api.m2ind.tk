@@ -81,7 +81,7 @@ Important: save the `score` ID returned in order to change later the user name
 
 ## Add username to score of finished (and won) game
 
-`POST http://api.m2ind.tk/scores/{score_id}`
+`PUT http://api.m2ind.tk/scores/{score_id}`
 
 #### parameters
 

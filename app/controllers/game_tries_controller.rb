@@ -1,13 +1,37 @@
 require 'mastermind_game_cli'
 
 class GameTriesController < ApplicationController
-  before_filter :restrict_access, only: [:index]
+  #before_filter :restrict_access, only: [:index]
 
   # GET /game_tries
   def index
-    @game_tries = GameTry.all
-
-    render json: @game_tries
+    if !params[:game_token].nil?
+      @game_tries = GameTry.where(game_token: params[:game_token])
+      if !params[:check_try].nil?
+        check_try = params[:check_try]
+        result = []
+        for game_try in @game_tries do
+          r = MastermindGameCli::Checker.check(check_try, game_try.try)
+          m = MastermindGameCli::Checker.get_matches(check_try, game_try.try)
+          result.push({
+              :try => game_try.try,
+              :result => (r == game_try.result),
+              :matches => (game_try.result.count('1') == m.length)
+          })
+        end
+        render json: result
+      else
+        render json: @game_tries
+      end
+    else
+      api_key = ApiKey.find_by_access_token(params[:access_token])
+      if api_key
+        @game_tries = GameTry.all
+        render json: @game_tries
+      else
+        head :unauthorized
+      end
+    end
   end
 
   # GET /game_tries/1
@@ -41,7 +65,8 @@ class GameTriesController < ApplicationController
                                   :try => guess,
                                   :result => result,
                                   :accepted => true,
-                                  :seconds => seconds
+                                  :seconds => seconds,
+                                  :hint => finished ? nil : get_hint(game.sequence, guess, tries)
                               })
 
       if @game_try.save
@@ -51,7 +76,7 @@ class GameTriesController < ApplicationController
             :result => result,
             :you_win => finished,
             :score => score_id,
-            :hint => finished ? nil : get_hint(game.sequence, guess, tries),
+            :hint => @game_try.hint,
             :try_num => num_tries_used_so_far
         }, status: :ok
         #render json: @game_try, status: :created, location: @game_try

@@ -65,3 +65,8 @@ build-iPhoneSimulator/
 # capistrano deploy
 config/deploy/*.rb
 config/deploy.rb
+
+# https://www.owasp.org/index.php/Ruby_on_Rails_Cheatsheet
+config/database.yml
+config/initializers/secret_token.rb
+db/seeds.rb
