@@ -11,6 +11,7 @@ class ScoresController < ApplicationController
     end
 
     @scores = Score.order(points: :desc).first(10)
+
     render json: @scores
   end
 
