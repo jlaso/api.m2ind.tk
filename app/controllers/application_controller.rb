@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   private
 
   def set_cache_headers
-    response.headers['Access-Control-Allow-Origin'] = '*'
+#    response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Credentials'] = true
     response.headers['Cache-Control'] = 'no-cache, no-store'
     response.headers['Pragma'] = 'no-cache'
