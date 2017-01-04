@@ -44,11 +44,10 @@ class ScoresController < ApplicationController
       raise 'score game not found' unless @score
       raise 'data mismatch' if @score.game_token != game_token
       raise 'user already set' if @score.user != 'unknown'
+      raise 'user too much long, limited to 5 chars' if user.length > 5
 
-      if @score.update({:user => user})
-        render json: {
-            :success => true
-        }
+      if @score.update(:user => user)
+        render json: { :success => true }
       else
         render json: @score.errors, status: :unprocessable_entity
       end

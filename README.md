@@ -131,3 +131,18 @@ Important: save the `score` ID returned in order to change later the user name
   { ... etc ... }
 ]
 ```
+
+## Ask for a Hint
+
+`POST http://api.m2ind.tk/game_hint`
+
+params: 
+
+game_token
+
+#### response
+
+```
+{
+}
+```

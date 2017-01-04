@@ -1,5 +1,4 @@
 require 'mastermind_game_cli'
-require_relative '../../lib/version'
 
 class GamesController < ApplicationController
   before_filter :restrict_access, only: [:index]
@@ -13,6 +12,9 @@ class GamesController < ApplicationController
 
   # POST /games
   def create
+
+    require_relative '../../lib/game_app'
+
     num_pos = params[:num_pos].nil? ? 5 : params[:num_pos].to_i
     num_pos = 9 if num_pos > 9
     num_pos = 4 if num_pos < 4
@@ -26,18 +28,21 @@ class GamesController < ApplicationController
     })
 
     if @game.save
-      result = {
+      render json: {
+          :success => true,
           :token => @game.token,
           :num_pos => @game.num_pos,
           :repeated => @game.repeated?,
         # for the moment don't include the sequence to guess into the response
         #  :sequence => @game.sequence,
           :created => @game.created_at,
-          :version => APP_VERSION
-      }
-      render json: result, status: :created, location: @game
+          :version => GameApp::VERSION
+      }, status: :created
     else
-      render json: @game.errors, status: :unprocessable_entity
+      render json: {
+          :success => false,
+          :error => @game.errors
+      }, status: :unprocessable_entity
     end
   end
 

@@ -3,8 +3,8 @@ Rails.application.routes.draw do
   get 'version', to: 'version#index'
 
   # game related routes # resources :games
-  get 'game', to: 'game#index'
-  post 'game', to: 'game#create'
+  get 'games', to: 'games#index'
+  post 'games', to: 'games#create'
 
   # game tries related routes (play turn and ask for played turns) # resources :game_tries
   get 'game_tries', to: 'game_tries#index'

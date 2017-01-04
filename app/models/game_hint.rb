@@ -1,5 +1,5 @@
 class GameHint < ApplicationRecord
 
-  belongs_to :Game
+  belongs_to :game
 
 end
