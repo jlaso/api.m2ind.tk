@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   # scores (results) related things, get high-scores or update name of user # resources :scores
   get 'scores', to: 'scores#index'
   get 'scores/:id', to: 'scores#show'
-  put 'scores/:id', to: 'scores#update'
+  post 'scores/:id', to: 'scores#update'
 
   # game hints related routes # resources :game_hints
   get 'game_hints', to: 'game_hints#index'

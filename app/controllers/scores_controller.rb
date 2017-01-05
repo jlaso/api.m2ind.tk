@@ -32,7 +32,7 @@ class ScoresController < ApplicationController
     end
   end
 
-  # PATCH/PUT /scores/1
+  # POST /scores/1
   def update
 
     begin
